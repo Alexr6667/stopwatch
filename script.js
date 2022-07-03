@@ -1,56 +1,45 @@
-let seconds = 1;
-let minutes = 1;
-let hours = 1;
+// Initialise time tracking variables
+let seconds = 0;
+let minutes = 0;
+let hours = 0;
 
-const secondText = document.querySelector("#secondText");
-const minuteText = document.querySelector("#minuteText");
-const hourText = document.querySelector("#hourText");
-
+// Initialise querySelectors
+const timer = document.querySelector(".time-section");
 const startBtn = document.querySelector("#startBtn");
-const stopBtn = document.querySelector("#stopBtn");
+const pauseBtn = document.querySelector("#pauseBtn");
 const resetBtn = document.querySelector("#resetBtn");
 
-let intervalIDSec;
-let intervalIDMin;
-let intervalIDHour;
-
+// Function for stopwatch. This also updates the innerHTML on screen.
 startBtn.addEventListener("click", function () {
-  intervalIDSec = setInterval(function () {
-    secondText.innerHTML = seconds;
+  intervalID = setInterval(function () {
     seconds++;
 
-    if (seconds === 60) {
+    if (seconds == 60) {
       seconds = 0;
+      minutes++;
     }
-  }, 10);
 
-  console.log(intervalIDSec);
-
-  intervalIDMin = setInterval(function () {
-    minuteText.innerHTML = minutes;
-    minutes++;
-
-    if (minutes === 59) {
+    if (minutes == 60) {
       minutes = 0;
+      hours++;
     }
-  }, 600);
 
-  console.log(intervalIDMin);
-
-  intervalIDHour = setInterval(function () {
-    hourText.innerHTML = hours;
-    hours++;
-  }, 3600);
-
-  console.log(intervalIDHour);
+    timer.innerHTML = `${hours < 10 ? "0" + hours : hours} : ${
+      minutes < 10 ? "0" + minutes : minutes
+    } : ${seconds < 10 ? "0" + seconds : seconds}`;
+  }, 0);
 });
 
-stopBtn.addEventListener("click", function () {
-  clearInterval(intervalIDSec);
-  clearInterval(intervalIDMin);
-  clearInterval(intervalIDHour);
+// Allows user to pause the stopwatch
+pauseBtn.addEventListener("click", function () {
+  clearInterval(intervalID);
 });
 
+// Allows user to reset stopwatch
 resetBtn.addEventListener("click", function () {
-  console.log("Reset pressed");
+  clearInterval(intervalID);
+  seconds = 0;
+  minutes = 0;
+  hours = 0;
+  timer.innerHTML = `00 : 00 : 00`;
 });
